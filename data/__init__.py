@@ -1,10 +1,12 @@
 import copy
 import importlib
+from pathlib import Path
 import os
 
 import torch.utils.data
 
 from data.base_dataset import BaseDataset
+from data.sketch_dataset import SketchDataset
 
 
 def find_dataset_using_name(dataset_name):
@@ -42,8 +44,10 @@ def create_dataloader(opt, verbose=True):
         >>> from data import create_dataloader
         >>> dataset = create_dataloader(opt)
     """
-    dataloader = CustomDatasetDataLoader(opt, verbose)
-    dataloader = dataloader.load_data()
+    csv_path = Path('CAT\data\image_paths_compression.csv')
+    T = torchvision.transforms.Compose([transforms.ToTensor(),])
+    dataset = SketchDataset(opt, verbose, transfoms=T, csv_file=csv_path)
+    dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_threads)
     return dataloader
 
 
@@ -60,8 +64,9 @@ def create_eval_dataloader(opt, direction=None):
         assert direction is not None
         opt.dataset_mode = 'single'
         opt.dataroot = os.path.join(opt.dataroot, 'val%s' % (direction[0]))
-    dataloader = CustomDatasetDataLoader(opt)
-    dataloader = dataloader.load_data()
+    csv_path = Path('CAT\data\image_paths_compression_val.csv')    
+    dataset = SketchDataset(opt, verbose, transfoms=T, csv_file=csv_path)
+    dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_threads)
     return dataloader
 
 
