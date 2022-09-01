@@ -63,7 +63,7 @@ class SketchDataset(BaseDataset):
         T = torchvision.transforms.Resize((128,128))
         real = T(real)
     
-        if transforms:
+        if self.transforms:
             real = self.transforms(real)
             condition = self.transforms(condition)
 
