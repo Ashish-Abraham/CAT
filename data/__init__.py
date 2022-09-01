@@ -2,7 +2,7 @@ import copy
 import importlib
 from pathlib import Path
 import os
-
+import torchvision
 import torch.utils.data
 
 from data.base_dataset import BaseDataset
