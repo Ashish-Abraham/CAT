@@ -5,6 +5,7 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 
 import argparse
 import os.path
+import pandas as pd
 
 from PIL import Image
 

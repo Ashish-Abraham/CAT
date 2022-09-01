@@ -4,6 +4,7 @@ from pathlib import Path
 import os
 import torchvision
 import torch.utils.data
+import pandas as pd
 
 from data.base_dataset import BaseDataset
 from data.sketch_dataset import SketchDataset
