@@ -50,7 +50,7 @@ class SketchDataset(BaseDataset):
 
 
 
-    def __getitem__(self, index):
+    def __getitem__(self, idx):
         # Label Image
         cimg_path = os.path.join(self.dir,self.img_names.iloc[idx,1])
         condition = Image.open(cimg_path).convert('RGB')
