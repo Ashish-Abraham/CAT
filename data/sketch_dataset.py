@@ -7,7 +7,7 @@ import argparse
 import os.path
 import pandas as pd
 from torch.utils.data import DataLoader, Dataset
-
+import torchvision
 from PIL import Image
 
 from utils import util
@@ -54,13 +54,13 @@ class SketchDataset(BaseDataset):
         # Label Image
         cimg_path = os.path.join(self.dir,self.img_names.iloc[idx,1])
         condition = Image.open(cimg_path).convert('RGB')
-        T= transforms.Resize((256,256))
+        T= torchvision.transforms.Resize((256,256))
         condition = T(condition)
 
         # input image (real images)
         rimg_path = os.path.join(self.dir,self.img_names.iloc[idx,0])
         real = Image.open(rimg_path).convert('RGB')
-        T = transforms.Resize((128,128))
+        T = torchvision.transforms.Resize((128,128))
         real = T(real)
     
         if transforms:
