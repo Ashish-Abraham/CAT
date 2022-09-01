@@ -24,8 +24,8 @@ def find_dataset_using_name(dataset_name):
 
     if dataset is None:
         raise NotImplementedError(
-            "In %s.py, there should be a subclass of BaseDataset with class name that matches %s in lowercase." % (
-                dataset_filename, target_dataset_name))
+            "In %s.py, there should be a subclass of BaseDataset with class name that matches %s in lowercase."
+            % (dataset_filename, target_dataset_name))
 
     return dataset
 
@@ -57,7 +57,7 @@ def create_eval_dataloader(opt, direction=None):
     opt = copy.deepcopy(opt)
     # Set some evaluation options
     # opt.prepocess = 'resize_and_crop'
-    opt.load_size = opt.crop_size
+    # opt.load_size = opt.crop_size
     opt.no_flip = True
     opt.serial_batches = True
     opt.batch_size = opt.eval_batch_size
@@ -74,7 +74,6 @@ def create_eval_dataloader(opt, direction=None):
 
 class CustomDatasetDataLoader():
     """Wrapper class of Dataset class that performs multi-threaded data loading"""
-
     def __init__(self, opt, verbose=True):
         """Initialize this class
 
@@ -97,7 +96,8 @@ class CustomDatasetDataLoader():
 
     def __len__(self):
         """Return the number of data in the dataset"""
-        return (len(self.dataset) + self.opt.batch_size - 1) // self.opt.batch_size
+        return (len(self.dataset) + self.opt.batch_size -
+                1) // self.opt.batch_size
 
     def __iter__(self):
         """Return a batch of data"""

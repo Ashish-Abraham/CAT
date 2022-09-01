@@ -21,10 +21,10 @@ from tqdm import tqdm
 
 from metric import get_fid, get_mIoU
 from utils import util
-from utils.weight_transfer import load_pretrained_weight
 from utils.model_profiling import model_profiling
 from utils import prune
 from utils.common import KA
+from models import networks
 
 from .base_inception_distiller import BaseInceptionDistiller
 
@@ -73,6 +73,7 @@ class InceptionDistiller(BaseInceptionDistiller):
                             log_dir='logs/inception',
                             teacher_netG='inception_9blocks',
                             student_netG='inception_9blocks')
+        parser = networks.modify_commandline_options(parser, is_train)
         return parser
 
     def __init__(self, opt):
@@ -174,7 +175,7 @@ class InceptionDistiller(BaseInceptionDistiller):
         else:
             self.loss_G_distill = 0
         self.loss_G = self.loss_G_gan + self.loss_G_recon + self.loss_G_distill
-        self.loss_G.backward()
+        self.loss_G.backward(retain_graph=True)
 
     def optimize_parameters(self, steps):
         self.forward()
@@ -187,19 +188,8 @@ class InceptionDistiller(BaseInceptionDistiller):
         self.backward_G(steps)
         self.optimizer_G.step()
 
-    def load_networks(self,
-                      verbose=True,
-                      teacher_only=False,
-                      restore_pretrain=True):
-        if self.opt.restore_pretrained_G_path is not None:
-            util.load_network(self.netG_pretrained,
-                              self.opt.restore_pretrained_G_path, verbose)
-            load_pretrained_weight(self.opt.pretrained_netG,
-                                   self.opt.student_netG, self.netG_pretrained,
-                                   self.netG_student, self.opt.pretrained_ngf,
-                                   self.opt.student_ngf)
-            del self.netG_pretrained
-        super(InceptionDistiller, self).load_networks()
+    def load_networks(self, prune_continue=False):
+        super(InceptionDistiller, self).load_networks(prune_continue)
 
     def evaluate_model(self, step, save_image=False):
         self.is_best = False

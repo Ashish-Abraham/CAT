@@ -98,6 +98,21 @@ class BaseInceptionDistiller(BaseModel):
                             help='weight for gan loss')
         parser.add_argument('--teacher_dropout_rate', type=float, default=0)
         parser.add_argument('--student_dropout_rate', type=float, default=0)
+        parser.add_argument(
+            '--norm_affine_student',
+            action='store_true',
+            help='set affine for the norm layer of student network')
+        parser.add_argument(
+            '--norm_track_running_stats_student',
+            action='store_true',
+            help='set track_running_stats for the norm layer of student network'
+        )
+        parser.add_argument(
+            '--padding_type_student',
+            type=str,
+            default='zero',
+            choices=['reflect', 'zero'],
+            help='padding type to use for student model[reflect | zero]')
         return parser
 
     def __init__(self, opt):
@@ -117,16 +132,18 @@ class BaseInceptionDistiller(BaseModel):
                                               opt.init_type,
                                               opt.init_gain,
                                               self.gpu_ids,
+                                              opt.padding_type,
                                               opt=opt)
         self.netG_student = networks.define_G(opt.input_nc,
                                               opt.output_nc,
                                               opt.student_ngf,
                                               opt.student_netG,
-                                              opt.norm,
+                                              opt.norm_student,
                                               opt.student_dropout_rate,
                                               opt.init_type,
                                               opt.init_gain,
                                               self.gpu_ids,
+                                              opt.padding_type_student,
                                               opt=opt)
 
         if hasattr(opt, 'distiller'):
@@ -139,6 +156,7 @@ class BaseInceptionDistiller(BaseModel):
                                                      opt.init_type,
                                                      opt.init_gain,
                                                      self.gpu_ids,
+                                                     opt.padding_type,
                                                      opt=opt)
 
         if opt.dataset_mode in ['aligned', 'cityscapes']:
@@ -339,30 +357,30 @@ class BaseInceptionDistiller(BaseModel):
                         (name, num_params / 1e6))
         print('-----------------------------------------------')
 
-    def load_networks(self,
-                      verbose=True,
-                      teacher_only=False,
-                      restore_pretrain=True):
+    def load_networks(self, verbose=True, prune_continue=False):
         util.load_network(self.netG_teacher, self.opt.restore_teacher_G_path,
                           verbose)
-        if self.opt.restore_student_G_path is not None:
-            util.load_network(self.netG_student,
-                              self.opt.restore_student_G_path, verbose)
-            if hasattr(self, 'netG_student_tmp'):
-                util.load_network(self.netG_student_tmp,
-                                  self.opt.restore_student_G_path, verbose)
         if self.opt.restore_D_path is not None:
             util.load_network(self.netD, self.opt.restore_D_path, verbose)
-        if self.opt.restore_A_path is not None:
-            for i, netA in enumerate(self.netAs):
-                path = '%s-%d.pth' % (self.opt.restore_A_path, i)
-                util.load_network(netA, path, verbose)
-        if self.opt.restore_O_path is not None:
-            for i, optimizer in enumerate(self.optimizers):
-                path = '%s-%d.pth' % (self.opt.restore_O_path, i)
-                util.load_optimizer(optimizer, path, verbose)
-                for param_group in optimizer.param_groups:
-                    param_group['lr'] = self.opt.lr
+        
+        if prune_continue:
+            if self.opt.restore_student_G_path is not None:
+                util.load_network(self.netG_student,
+                                self.opt.restore_student_G_path, verbose)
+                if hasattr(self, 'netG_student_tmp'):
+                    util.load_network(self.netG_student_tmp,
+                                    self.opt.restore_student_G_path, verbose)
+            
+            if self.opt.restore_A_path is not None:
+                for i, netA in enumerate(self.netAs):
+                    path = '%s-%d.pth' % (self.opt.restore_A_path, i)
+                    util.load_network(netA, path, verbose)
+            if self.opt.restore_O_path is not None:
+                for i, optimizer in enumerate(self.optimizers):
+                    path = '%s-%d.pth' % (self.opt.restore_O_path, i)
+                    util.load_optimizer(optimizer, path, verbose)
+                    for param_group in optimizer.param_groups:
+                        param_group['lr'] = self.opt.lr
 
     def save_networks(self, epoch):
         def save_net(net, save_path):
