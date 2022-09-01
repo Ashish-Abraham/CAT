@@ -45,7 +45,7 @@ def create_dataloader(opt, verbose=True):
         >>> dataset = create_dataloader(opt)
     """
     csv_path = Path('CAT\data\image_paths_compression.csv')
-    T = torchvision.transforms.Compose([transforms.ToTensor(),])
+    T = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),])
     dataset = SketchDataset(opt, verbose, transfoms=T, csv_file=csv_path)
     dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_threads)
     return dataloader
