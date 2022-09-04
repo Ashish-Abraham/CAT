@@ -67,6 +67,7 @@ def create_eval_dataloader(opt, direction=None):
         opt.dataset_mode = 'single'
         opt.dataroot = os.path.join(opt.dataroot, 'val%s' % (direction[0]))
     csv_path = Path('data/image_paths_compression_val.csv') 
+    T = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),])
     dataset = SketchDataset(opt, transforms=T, csv_file=csv_path)
     dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_threads)
     return dataloader
