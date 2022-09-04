@@ -240,7 +240,7 @@ class Trainer:
             opt.data_channel, opt.data_height, opt.data_width = next(
                 iter(dataloader))['A' if opt.direction ==
                                   'AtoB' else 'B'].shape[1:]
-        elif opt.dataset_mode in ['cityscapes']:
+        elif opt.dataset_mode in ['cityscapes','sketch']:
             input_ = next(iter(dataloader))
             opt.data_height, opt.data_width = input_['label'].shape[2:]
             opt.data_channel = opt.input_nc
