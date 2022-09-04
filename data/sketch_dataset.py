@@ -53,12 +53,14 @@ class SketchDataset(BaseDataset):
     def __getitem__(self, idx):
         # Label Image
         cimg_path = os.path.join(self.dir,self.img_names.iloc[idx,1])
+        print(cimg_path)
         condition = Image.open(cimg_path).convert('RGB')
         T= torchvision.transforms.Resize((256,256))
         condition = T(condition)
 
         # input image (real images)
         rimg_path = os.path.join(self.dir,self.img_names.iloc[idx,0])
+        print(rimg_path)
         real = Image.open(rimg_path).convert('RGB')
         T = torchvision.transforms.Resize((128,128))
         real = T(real)
