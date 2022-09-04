@@ -72,7 +72,7 @@ class SketchDataset(BaseDataset):
             condition = self.transforms(condition)
             print(condition.shape)
 
-        instance_tensor = 0
+        instance_tensor = torch.zeros((3,256, 256))
 
         input_dict = {
             'label': condition,
