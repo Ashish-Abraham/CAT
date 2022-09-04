@@ -8,6 +8,7 @@ import os.path
 import pandas as pd
 from torch.utils.data import DataLoader, Dataset
 import torchvision
+import torch
 from PIL import Image
 
 from utils import util
