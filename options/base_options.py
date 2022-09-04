@@ -482,6 +482,6 @@ class BaseOptions:
                 opt.gpu_ids.append(id)
         if len(opt.gpu_ids) > 0:
             torch.cuda.set_device(opt.gpu_ids[0])
-        opt.crop_size = [int(item) for item in opt.crop_size.split(',')]
+        opt.crop_size = [256,256]
         self.opt = opt
         return self.opt
