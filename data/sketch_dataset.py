@@ -66,6 +66,7 @@ class SketchDataset(BaseDataset):
         real = T(real)
     
         if self.transforms:
+            print("Successful transforms")
             real = self.transforms(real)
             condition = self.transforms(condition)
 
