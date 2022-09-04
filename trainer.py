@@ -246,8 +246,11 @@ class Trainer:
             opt.data_channel = opt.input_nc
             if opt.contain_dontcare_label:
                 opt.data_channel += 1
+                print(opt.data_channel,"1")
             if not opt.no_instance:
-                opt.data_channel += input_['instance'].shape[1]
+                # opt.data_channel += input_['instance'].shape[1]
+                opt.data_channel += 0
+                print(opt.data_channel,"2")
         else:
             raise NotImplementedError
         print(
