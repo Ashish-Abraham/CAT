@@ -68,7 +68,9 @@ class SketchDataset(BaseDataset):
         if self.transforms:
             print("Successful transforms")
             real = self.transforms(real)
+            print(real.shape)
             condition = self.transforms(condition)
+            print(condition.shape)
 
         input_dict = {
             'label': condition,
