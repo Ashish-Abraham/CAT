@@ -72,9 +72,11 @@ class SketchDataset(BaseDataset):
             condition = self.transforms(condition)
             print(condition.shape)
 
+        instance_tensor = 0
+
         input_dict = {
             'label': condition,
-            'instance': None,
+            'instance': instance_tensor,
             'image': real,
             'path': rimg_path,
         }
