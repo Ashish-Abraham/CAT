@@ -40,11 +40,11 @@ class SketchDataset(BaseDataset):
             help='if the label map contains dontcare label (dontcare=255)')
         parser.set_defaults(preprocess='scale_width',
                             aspect_ratio=2,
-                            load_size=512,
-                            crop_size=512,
+                            load_size=256,
+                            crop_size=256,
                             direction='BtoA',
-                            display_winsize=512,
-                            input_nc=35,
+                            display_winsize=256,
+                            input_nc=3,
                             num_threads=0)
         return parser
 
