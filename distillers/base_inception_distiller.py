@@ -583,7 +583,7 @@ class BaseInceptionDistiller(BaseModel):
                                                      opt.padding_type,
                                                      opt=opt)
 
-        if opt.dataset_mode in ['aligned', 'cityscapes']:
+        if opt.dataset_mode in ['aligned', 'cityscapes', 'sketch']:
             self.netD = networks.define_D(opt.input_nc + opt.output_nc,
                                           opt.ndf,
                                           opt.netD,
@@ -711,7 +711,7 @@ class BaseInceptionDistiller(BaseModel):
         self.mapping_hooks = []
 
     def set_input(self, input):
-        if self.opt.dataset_mode == 'cityscapes':
+        if self.opt.dataset_mode in ['cityscapes','sketch']:
             self.image_paths = input['path']
             self.real_A, self.real_B = input['label'].to(
                 self.device), input['image'].to(self.device)
@@ -722,7 +722,7 @@ class BaseInceptionDistiller(BaseModel):
             self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def set_single_input(self, input):
-        if self.opt.dataset_mode == 'cityscapes':
+        if self.opt.dataset_mode in ['cityscapes','sketch']:
             self.real_A = input['label'].to(self.device)
             self.image_paths = input['path']
         else:

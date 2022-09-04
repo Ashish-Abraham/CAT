@@ -522,7 +522,7 @@ class InceptionDistiller(BaseInceptionDistiller):
             'metric/fid-mean': sum(self.fids) / len(self.fids),
             'metric/fid-best': self.best_fid
         }
-        if 'cityscapes' in self.opt.dataroot and self.opt.direction == 'BtoA':
+        if 'cityscapes' in self.opt.dataroot or 'sketch' in self.opt.dataroot and self.opt.direction == 'BtoA':
             mIoU = get_mIoU(fakes,
                             names,
                             self.drn_model,
@@ -540,5 +540,6 @@ class InceptionDistiller(BaseInceptionDistiller):
             ret['metric/mIoU'] = mIoU
             ret['metric/mIoU-mean'] = sum(self.mIoUs) / len(self.mIoUs)
             ret['metric/mIoU-best'] = self.best_mIoU
+            
         self.netG_student.train()
         return ret
