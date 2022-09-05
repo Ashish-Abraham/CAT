@@ -22,8 +22,11 @@ def align_images(a_file_paths, b_file_paths, target_path):
         os.makedirs(target_path)
 
     for i in range(len(a_file_paths)):
+        im_size=(256,256)
         img_a = Image.open(a_file_paths[i])
+        img_a = img_a.resize(im_size)
         img_b = Image.open(b_file_paths[i])
+        img_b = img_b.resize(im_size)
         assert (img_a.size == img_b.size)
 
         aligned_image = Image.new("RGB", (img_a.size[0] * 2, img_a.size[1]))
