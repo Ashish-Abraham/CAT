@@ -571,6 +571,9 @@ def get_netG_cls(netG):
     elif netG == 'inception_spade':
         from .modules.inception_architecture.inception_spade_generator import InceptionSPADEGenerator
         return InceptionSPADEGenerator
+    elif netG == 'inception_sketch':
+        from .modules.inception_architecture.inception_generator import InceptionSketchGenerator
+        return InceptionSketchGenerator    
     else:
         raise NotImplementedError(
             'Generator model name [%s] is not recognized' % netG)
