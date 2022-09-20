@@ -500,6 +500,22 @@ def define_G(input_nc,
     elif netG == 'inception_spade':
         from .modules.inception_architecture.inception_spade_generator import InceptionSPADEGenerator
         net = InceptionSPADEGenerator(opt)
+    elif netG == 'inception_sketch':
+        from .modules.inception_architecture.inception_generator import InceptionSketchGenerator
+        net = InceptionSketchGenerator(
+            input_nc,
+            output_nc,
+            ngf=ngf,
+            channels=opt.channels,
+            channels_reduction_factor=opt.channels_reduction_factor,
+            kernel_sizes=opt.kernel_sizes,
+            padding_type=padding_type,
+            norm_layer=norm_layer,
+            norm_momentum=opt.norm_momentum,
+            norm_epsilon=opt.norm_epsilon,
+            dropout_rate=dropout_rate,
+            active_fn=opt.active_fn,
+            n_blocks=9)    
     else:
         raise NotImplementedError(
             'Generator model name [%s] is not recognized' % netG)
