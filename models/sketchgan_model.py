@@ -121,8 +121,8 @@ class SketchGAN(BaseModel):
         Returns:
             the modified parser.
         """
-         parser = super(SketchGAN, SketchGAN).modify_commandline_options(
-            parser, is_train)
+        #fix
+        parser = super(SketchGAN, SketchGAN).modify_commandline_options(parser, is_train)
         parser.add_argument('--restore_G_path',
                             type=str,
                             default=None,
