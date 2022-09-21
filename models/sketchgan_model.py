@@ -166,7 +166,7 @@ class SketchGAN(BaseModel):
         parser = networks.modify_commandline_options(parser, is_train)
         return parser
 
-    @abstractmethod
+    
     def set_input(self, input):
         """Unpack input data from the dataloader and perform necessary pre-processing steps.
         Parameters:
@@ -177,7 +177,7 @@ class SketchGAN(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
-    @abstractmethod
+    
     def forward(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         self.fake_B = self.netG(self.real_A)
@@ -221,7 +221,7 @@ class SketchGAN(BaseModel):
         self.loss_G.backward()
     
 
-    @abstractmethod
+    
     def optimize_parameters(self, steps):
         """Calculate losses, gradients, and update network weights; called in every training iteration"""
         self.forward()
