@@ -173,7 +173,7 @@ class InceptionSketchGenerator(BaseNetwork):
 
         down_sampling = [
             nn.ReflectionPad2d(3),
-            nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0, bias=use_bias),
+            nn.Conv2d(input_nc, ngf, kernel_size=4, padding=1, bias=use_bias),
             norm_layer(ngf),
             nn.ReLU(True)
         ]
@@ -184,7 +184,7 @@ class InceptionSketchGenerator(BaseNetwork):
             down_sampling += [
                 nn.Conv2d(ngf * mult,
                           ngf * mult * 2,
-                          kernel_size=3,
+                          kernel_size=4,
                           stride=2,
                           padding=1,
                           bias=use_bias),
@@ -256,7 +256,7 @@ class InceptionSketchGenerator(BaseNetwork):
             up_sampling += [
                 nn.ConvTranspose2d(ngf * mult,
                                    int(ngf * mult / 2),
-                                   kernel_size=3,
+                                   kernel_size=4,
                                    stride=2,
                                    padding=1,
                                    output_padding=1,
@@ -265,7 +265,7 @@ class InceptionSketchGenerator(BaseNetwork):
                 nn.ReLU(True)
             ]
         up_sampling += [nn.ReflectionPad2d(3)]
-        up_sampling += [nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0)]
+        up_sampling += [nn.Conv2d(ngf, output_nc, kernel_size=4, padding=1)]
         up_sampling += [nn.Tanh()]
         self.down_sampling = nn.Sequential(*down_sampling)
         self.features = nn.Sequential(*features)

@@ -665,7 +665,7 @@ class BaseInceptionDistiller(BaseModel):
         self.inception_model.to(self.device)
         self.inception_model.eval()
 
-        if 'cityscapes' in opt.dataroot:
+        if 'cityscapes' in opt.dataroot or 'sketch' in opt.dataroot:
             self.drn_model = DRNSeg('drn_d_105', 19, pretrained=False)
             util.load_network(self.drn_model, opt.drn_path, verbose=False)
             if len(opt.gpu_ids) > 0:
