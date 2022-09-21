@@ -16,7 +16,7 @@ from .base_model import BaseModel
 from .modules.loss import GANLoss
 
 
-class SketchGAN(BaseModel):
+class SketchGANModel(BaseModel):
     """This class is an abstract base class (ABC) for models.
     To create a subclass, you need to implement the following five functions:
         -- <__init__>:                      initialize the class; first call BaseModel.__init__(self, opt).
