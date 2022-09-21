@@ -151,6 +151,7 @@ def create_dataloader(opt, verbose=True):
     """
     dataloader = CustomDatasetDataLoader(opt, verbose)
     dataloader = dataloader.load_data()
+    opt.load_size = opt.crop_size       #added by me
     return dataloader
 
 
