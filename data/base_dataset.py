@@ -272,7 +272,7 @@ def get_transform(opt,
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
     if 'resize' in opt.preprocess:
-        # osize = [opt.load_size, opt.load_size]
+        opt.osize = [opt.load_size, opt.load_size]
         transform_list.append(transforms.Resize(opt.load_size, method))
     elif 'scale_width' in opt.preprocess:
         transform_list.append(
