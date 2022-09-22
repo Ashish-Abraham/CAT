@@ -460,12 +460,12 @@ class BaseInceptionDistiller(BaseModel):
                             type=str,
                             default='inception_9blocks',
                             help='specify teacher generator architecture',
-                            choices=['inception_9blocks'])
+                            choices=['inception_9blocks','inception_sketch'])
         parser.add_argument('--student_netG',
                             type=str,
                             default='inception_9blocks',
                             help='specify student generator architecture',
-                            choices=['inception_9blocks'])
+                            choices=['inception_9blocks','inception_sketch'])
         parser.add_argument(
             '--teacher_ngf',
             type=int,
