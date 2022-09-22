@@ -344,8 +344,8 @@ class InceptionDistiller(BaseInceptionDistiller):
         parser.set_defaults(norm='instance',
                             dataset_mode='aligned',
                             log_dir='logs/inception',
-                            teacher_netG='inception_9blocks',
-                            student_netG='inception_9blocks')
+                            teacher_netG='inception_sketch',
+                            student_netG='inception_sketch)
         parser = networks.modify_commandline_options(parser, is_train)
         return parser
 
