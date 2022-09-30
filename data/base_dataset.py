@@ -54,7 +54,7 @@ class BaseDataset(data.Dataset, ABC):
 
 
 def get_params(opt, img):
-    w, h = img.size
+    w, h = 256, 256
     new_h = h
     new_w = w
     crop_w, crop_h = 0, 0
