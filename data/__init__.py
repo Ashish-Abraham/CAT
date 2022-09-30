@@ -182,7 +182,12 @@ class CustomDatasetDataLoader():
         """
         self.opt = opt
         dataset_class = find_dataset_using_name(opt.dataset_mode)
-        self.dataset = dataset_class(opt)
+        if dataset_class == 'sketch':
+            T = torchvision.transforms.Compose([transforms.ToTensor(),])
+            csv="data\image_paths.csv"
+            self.dataset = dataset_class(opt,T,csv)
+        else:
+            self.dataset = dataset_class(opt)
         if verbose:
             print("dataset [%s] was created" % type(self.dataset).__name__)
         self.dataloader = torch.utils.data.DataLoader(
