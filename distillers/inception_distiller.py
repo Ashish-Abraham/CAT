@@ -317,7 +317,7 @@ class InceptionDistiller(BaseInceptionDistiller):
                             type=str,
                             default='inception_9blocks',
                             help='specify pretrained generator architecture',
-                            choices=['inception_9blocks, inception_sketch'])
+                            choices=['inception_9blocks', 'inception_sketch'])
         parser.add_argument('--pretrained_ngf', type=int, default=64)
         parser.add_argument('--target_flops',
                             type=float,
