@@ -1,5 +1,4 @@
 """This module implements an abstract base class (ABC) 'BaseDataset' for datasets.
-
 It also includes common transformation functions (e.g., get_transform, __scale_width), which can be later used in subclasses.
 """
 import random
@@ -13,7 +12,6 @@ from PIL import Image
 
 class BaseDataset(data.Dataset, ABC):
     """This class is an abstract base class (ABC) for datasets.
-
     To create a subclass, you need to implement the following four functions:
     -- <__init__>:                      initialize the class, first call BaseDataset.__init__(self, opt).
     -- <__len__>:                       return the size of dataset.
@@ -22,7 +20,6 @@ class BaseDataset(data.Dataset, ABC):
     """
     def __init__(self, opt):
         """Initialize the class; save the options in the class
-
         Parameters:
             opt (Option class)-- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
@@ -32,11 +29,9 @@ class BaseDataset(data.Dataset, ABC):
     @staticmethod
     def modify_commandline_options(parser, is_train):
         """Add new dataset-specific options, and rewrite default values for existing options.
-
         Parameters:
             parser          -- original option parser
             is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
-
         Returns:
             the modified parser.
         """
@@ -50,24 +45,24 @@ class BaseDataset(data.Dataset, ABC):
     @abstractmethod
     def __getitem__(self, index):
         """Return a data point and its metadata information.
-
         Parameters:
             index - - a random integer for data indexing
-
         Returns:
             a dictionary of data with their names. It ususally contains the data itself and its metadata information.
         """
         pass
 
 
-def get_params(opt, size):
-    w, h = size
+def get_params(opt, img):
+    w, h = img.size
     new_h = h
     new_w = w
     crop_w, crop_h = 0, 0
     if opt.preprocess == 'resize_and_crop':
-        new_h = new_w = opt.load_size
-        crop_h = crop_w = opt.crop_size
+        img = transforms.Resize(opt.load_size)(img)
+        new_h, new_w = img.size
+        crop_w = opt.crop_size[1]
+        crop_h = opt.crop_size[0]
     elif opt.preprocess == 'scale_width_and_crop':
         new_w = opt.load_size
         new_h = opt.load_size * h // w
@@ -92,8 +87,8 @@ def get_transform(opt,
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
     if 'resize' in opt.preprocess:
-        osize = [opt.load_size, opt.load_size]
-        transform_list.append(transforms.Resize(osize, method))
+        # osize = [opt.load_size, opt.load_size]
+        transform_list.append(transforms.Resize(opt.load_size, method))
     elif 'scale_width' in opt.preprocess:
         transform_list.append(
             transforms.Lambda(
@@ -180,4 +175,3 @@ def __print_size_warning(ow, oh, w, h):
               "(%d, %d). This adjustment will be done to all images "
               "whose sizes are not multiples of 4" % (ow, oh, w, h))
         __print_size_warning.has_printed = True
-
