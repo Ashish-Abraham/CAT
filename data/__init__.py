@@ -185,7 +185,7 @@ class CustomDatasetDataLoader():
         self.opt = opt
         dataset_class = find_dataset_using_name(opt.dataset_mode)
         if opt.dataset_mode == 'sketch':
-            T = torchvision.transforms.Compose([transforms.ToTensor(),])
+            T = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),])
             csv="data\image_paths.csv"
             self.dataset = dataset_class(opt,T,csv)
         else:
