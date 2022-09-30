@@ -112,6 +112,8 @@ import importlib
 import os
 
 import torch.utils.data
+import torchvision
+import torch
 
 from data.base_dataset import BaseDataset
 
