@@ -407,7 +407,7 @@ class Pix2PixModel(BaseModel):
         else:
             direction=['B','A']    
 
-        self.eval_dataloader = create_eval_dataloader(self.opt, direction=['B','A'])
+        self.eval_dataloader = create_eval_dataloader(self.opt, direction)
 
         block_idx = InceptionV3.BLOCK_INDEX_BY_DIM[2048]
         self.inception_model = InceptionV3([block_idx])
@@ -503,7 +503,7 @@ class Pix2PixModel(BaseModel):
         fakes, names = [], []
         cnt = 0
         for i, data_i in enumerate(tqdm(self.eval_dataloader)):
-            print(i,"----",data_i)
+            print(data_i)
             self.set_input(data_i)
             self.test()
             fakes.append(self.fake_B.cpu())
