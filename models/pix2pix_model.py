@@ -503,6 +503,7 @@ class Pix2PixModel(BaseModel):
         fakes, names = [], []
         cnt = 0
         for i, data_i in enumerate(tqdm(self.eval_dataloader)):
+            print(i,"----",data_i)
             self.set_input(data_i)
             self.test()
             fakes.append(self.fake_B.cpu())

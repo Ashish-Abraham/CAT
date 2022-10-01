@@ -311,7 +311,7 @@ class Trainer:
             epoch_start_time = time.time()
             for i, data_i in enumerate(dataloader):
                 iter_start_time = time.time()
-                print(i,"----",data_i)
+                # print(i,"----",data_i)
                 model.set_input(data_i)
                 model.optimize_parameters(total_iter)
 
