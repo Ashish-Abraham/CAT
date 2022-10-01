@@ -402,6 +402,11 @@ class Pix2PixModel(BaseModel):
         self.optimizers.append(self.optimizer_G)
         self.optimizers.append(self.optimizer_D)
 
+        if self.opt.direction == "AtoB":
+            direction=['A','B']
+        else:
+            direction=['B','A']    
+
         self.eval_dataloader = create_eval_dataloader(self.opt, direction=['B','A'])
 
         block_idx = InceptionV3.BLOCK_INDEX_BY_DIM[2048]
