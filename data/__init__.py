@@ -112,8 +112,6 @@ import importlib
 import os
 
 import torch.utils.data
-import torchvision
-import torch
 
 from data.base_dataset import BaseDataset
 
@@ -153,7 +151,6 @@ def create_dataloader(opt, verbose=True):
     """
     dataloader = CustomDatasetDataLoader(opt, verbose)
     dataloader = dataloader.load_data()
-    opt.load_size = opt.crop_size       #added by me
     return dataloader
 
 
@@ -184,12 +181,7 @@ class CustomDatasetDataLoader():
         """
         self.opt = opt
         dataset_class = find_dataset_using_name(opt.dataset_mode)
-        if opt.dataset_mode == 'sketch':
-            T = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),])
-            csv="/content/CAT/data/image_paths_compression_train.csv"
-            self.dataset = dataset_class(opt,T,csv)
-        else:
-            self.dataset = dataset_class(opt)
+        self.dataset = dataset_class(opt)
         if verbose:
             print("dataset [%s] was created" % type(self.dataset).__name__)
         self.dataloader = torch.utils.data.DataLoader(
