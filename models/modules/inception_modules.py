@@ -230,8 +230,11 @@ class InvertedResidualChannels(nn.Module):
     def forward(self, x):
         if len(self.res_ops) == 0 and len(self.dw_ops) == 0:
             return x
-        tmp = sum([op(x) for op in self.res_ops]) + sum(
-            [op(x) for op in self.dw_ops])
+        r = sum([op(x) for op in self.res_ops])  
+        s = sum([op(x) for op in self.dw_ops])
+        print("x: ",x.shape,"r: ",r.shape,"s: ",s.shape)
+        tmp = self.pw_bn(tmp)
+        tmp = sum([op(x) for op in self.res_ops]) + sum([op(x) for op in self.dw_ops])
         tmp = self.pw_bn(tmp)
         return x + tmp
 

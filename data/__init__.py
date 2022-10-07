@@ -154,7 +154,7 @@ def create_dataloader(opt, verbose=True):
     return dataloader
 
 
-def create_eval_dataloader(opt, direction=None):
+def create_eval_dataloader(opt, direction='BtoA'):
     opt = copy.deepcopy(opt)
     # Set some evaluation options
     # opt.prepocess = 'resize_and_crop'
