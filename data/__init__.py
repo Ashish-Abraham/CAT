@@ -34,10 +34,8 @@ def get_option_setter(dataset_name):
 
 def create_dataloader(opt, verbose=True):
     """Create a dataset given the option.
-
     This function wraps the class CustomDatasetDataLoader.
         This is the main interface between this package and 'train.py'/'test.py'
-
     Example:
         >>> from data import create_dataloader
         >>> dataset = create_dataloader(opt)
@@ -70,7 +68,6 @@ class CustomDatasetDataLoader():
 
     def __init__(self, opt, verbose=True):
         """Initialize this class
-
         Step 1: create a dataset instance given the name [dataset_mode]
         Step 2: create a multi-threaded data loader.
         """
