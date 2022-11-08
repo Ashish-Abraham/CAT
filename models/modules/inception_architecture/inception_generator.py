@@ -136,7 +136,24 @@ class InceptionGenerator(BaseNetwork):
 
     def forward(self, input):
         """Standard forward"""
+        # res = self.down_sampling(input)
+        # res = self.features(res)
+        # res = self.up_sampling(res)
+        # return res
+        #Stage1
         res = self.down_sampling(input)
+        res = self.features(res)
+        res = self.up_sampling(res)
+        y = torch.add(res,input)
+        y = nn.functional.normalize(y, p=1.0, dim = 0)
+        #Stage2
+        res = self.down_sampling(y)
+        res = self.features(res)
+        res = self.up_sampling(res)
+        z = torch.add(res,y)
+        z = nn.functional.normalize(z, p=1.0, dim = 0)
+        #Stage3
+        res = self.down_sampling(z)
         res = self.features(res)
         res = self.up_sampling(res)
         return res
