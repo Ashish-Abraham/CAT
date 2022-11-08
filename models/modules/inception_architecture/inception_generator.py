@@ -1,6 +1,6 @@
 import functools
 
-from torch import nn
+from torch import nn,add
 
 from models.modules.inception_modules import InvertedResidualChannels
 from models.modules.inception_modules import get_active_fn
@@ -144,13 +144,13 @@ class InceptionGenerator(BaseNetwork):
         res = self.down_sampling(input)
         res = self.features(res)
         res = self.up_sampling(res)
-        y = torch.add(res,input)
+        y = add(res,input)
         y = nn.functional.normalize(y, p=1.0, dim = 0)
         #Stage2
         res = self.down_sampling(y)
         res = self.features(res)
         res = self.up_sampling(res)
-        z = torch.add(res,y)
+        z = add(res,y)
         z = nn.functional.normalize(z, p=1.0, dim = 0)
         #Stage3
         res = self.down_sampling(z)
