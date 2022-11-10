@@ -167,7 +167,7 @@ class Pix2PixModel(BaseModel):
                                              for_discriminator=True)
 
         pred_real = self.netD(real_AB)
-        print("fake:",pred_fake,"real:",pred_real, "-backwardD")
+        # print("fake:",pred_fake,"real:",pred_real, "-backwardD")
         self.loss_D_real = self.criterionGAN(pred_real,
                                              True,
                                              for_discriminator=True)
@@ -179,7 +179,7 @@ class Pix2PixModel(BaseModel):
         """Calculate GAN and L1 loss for the generator"""
         fake_AB = torch.cat((self.real_A, self.fake_B), 1)
         pred_fake = self.netD(fake_AB)
-        print(pred_fake, "-backwardG")
+        # print(pred_fake, "-backwardG")
         self.loss_G_gan = self.criterionGAN(
             pred_fake, True, for_discriminator=False) * self.opt.lambda_gan
         self.loss_G_recon = self.criterionRecon(
