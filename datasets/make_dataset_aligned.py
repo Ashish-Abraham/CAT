@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     test_a_path = os.path.join(dataset_folder, 'valA')
     # test_b_path = os.path.join(dataset_folder, 'testB')
-    test_a_file_paths, test_b_file_paths = get_file_paths(test_a_path)
+    test_b_file_paths, test_a_file_paths = get_file_paths(test_a_path)
     assert (len(test_a_file_paths) == len(test_b_file_paths))
     test_path = os.path.join(dataset_folder, 'val')
 
