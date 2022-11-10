@@ -73,5 +73,9 @@ if __name__ == '__main__':
         train_b_file_paths[i] = train_b_file_paths[i].replace("trainA","trainB")
         train_b_file_paths[i] = train_b_file_paths[i].replace("cc","")
 
+    for i in range(len(test_b_file_paths)):
+        test_b_file_paths[i] = test_b_file_paths[i].replace("valA","valB")
+        test_b_file_paths[i] = test_b_file_paths[i].replace("cc","")    
+
     align_images(test_a_file_paths, test_b_file_paths, test_path)
     align_images(train_a_file_paths, train_b_file_paths, train_path)
