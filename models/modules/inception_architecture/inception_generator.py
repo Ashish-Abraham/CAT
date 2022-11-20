@@ -133,6 +133,7 @@ class InceptionGenerator(BaseNetwork):
         self.down_sampling = nn.Sequential(*down_sampling)
         self.features = nn.Sequential(*features)
         self.up_sampling = nn.Sequential(*up_sampling)
+        self.final_activation = nn.Tanh(True)
         # self.bn1= nn.BatchNorm2d()
         # self.bn1= nn.BatchNorm2d()
         # self.bn1= nn.BatchNorm2d()
@@ -151,9 +152,8 @@ class InceptionGenerator(BaseNetwork):
         print("res: ",res.shape)
         y = add(res,input)
         print("after adding: ",y.shape)
-        y = nn.functional.normalize(y, p=1.0, dim = 0)
-        # y = nn.BatchNorm2d(y, affine=True)
         print("after batchnorm: ",y.shape)
+        
         #Stage2
         res = self.down_sampling(y)
         res = self.features(res)
@@ -161,14 +161,13 @@ class InceptionGenerator(BaseNetwork):
         print("resl2: ",res.shape)
         z = add(res,y)
         print("after adding: ",z.shape)
-        z = nn.functional.normalize(z, p=1.0, dim = 0)
-        # z = nn.BatchNorm2d(z, affine=True)
+        
         #Stage3
         res = self.down_sampling(z)
         res = self.features(res)
         res = self.up_sampling(res)
         print("resl3: ",res.shape)
-        return nn.Tanh(res)
+        return self.final_activation(res)
 
     def get_named_block_list(self):
         return _get_named_block_list(self)
