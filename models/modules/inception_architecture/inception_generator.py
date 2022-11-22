@@ -119,7 +119,7 @@ class InceptionGenerator(BaseNetwork):
             up_sampling += [
                 nn.ConvTranspose2d(ngf * mult,
                                    int(ngf * mult / 2),
-                                   kernel_size=4,
+                                   kernel_size=3,
                                    stride=2,
                                    padding=1,
                                    output_padding=1,
