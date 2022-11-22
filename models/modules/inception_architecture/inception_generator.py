@@ -119,7 +119,7 @@ class InceptionGenerator(BaseNetwork):
             up_sampling += [
                 nn.ConvTranspose2d(ngf * mult,
                                    int(ngf * mult / 2),
-                                   kernel_size=3,
+                                   kernel_size=4,
                                    stride=2,
                                    padding=1,
                                    output_padding=1,
@@ -133,11 +133,7 @@ class InceptionGenerator(BaseNetwork):
         self.down_sampling = nn.Sequential(*down_sampling)
         self.features = nn.Sequential(*features)
         self.up_sampling = nn.Sequential(*up_sampling)
-        self.final_activation = nn.Tanh(True)
-        # self.bn1= nn.BatchNorm2d()
-        # self.bn1= nn.BatchNorm2d()
-        # self.bn1= nn.BatchNorm2d()
-
+    
     def forward(self, input):
         """Standard forward"""
         # res = self.down_sampling(input)
@@ -167,7 +163,7 @@ class InceptionGenerator(BaseNetwork):
         res = self.features(res)
         res = self.up_sampling(res)
         print("resl3: ",res.shape)
-        return self.final_activation(res)
+        return res
 
     def get_named_block_list(self):
         return _get_named_block_list(self)
