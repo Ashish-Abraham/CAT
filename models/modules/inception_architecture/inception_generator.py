@@ -17,7 +17,7 @@ class InceptionGenerator(BaseNetwork):
                  channels_reduction_factor,
                  kernel_sizes,
                  padding_type='reflect',
-                 norm_layer=nn.InstanceNorm2d,
+                 norm_layer=nn.BatchNorm2d,
                  norm_momentum=0.1,
                  norm_epsilon=1e-5,
                  dropout_rate=0,
@@ -28,9 +28,9 @@ class InceptionGenerator(BaseNetwork):
             set(kernel_sizes)), 'no duplicate in kernel sizes is allowed.'
         super(InceptionGenerator, self).__init__()
         if type(norm_layer) == functools.partial:
-            use_bias = norm_layer.func == nn.InstanceNorm2d
+            use_bias = norm_layer.func == nn.BatchNorm2d
         else:
-            use_bias = norm_layer == nn.InstanceNorm2d
+            use_bias = norm_layer == nn.BatchNorm2d
         norm_kwargs = {'momentum': norm_momentum, 'eps': norm_epsilon}
         active_fn = get_active_fn(active_fn)
 
