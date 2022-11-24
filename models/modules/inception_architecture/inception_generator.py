@@ -145,17 +145,20 @@ class InceptionGenerator(BaseNetwork):
         res = self.features(res)
         res = self.up_sampling(res)
         y = add(res,input)
+        print(type(y))
         
         #Stage2
         res = self.down_sampling(y)
         res = self.features(res)
         res = self.up_sampling(res)
         z = add(res,y)
+        print(type(z))
         
         #Stage3
         res = self.down_sampling(z)
         res = self.features(res)
         res = self.up_sampling(res)
+        print(type(res))
         return res
 
     def get_named_block_list(self):
