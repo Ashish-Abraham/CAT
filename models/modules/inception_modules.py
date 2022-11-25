@@ -28,7 +28,7 @@ class ConvBNReLU(nn.Sequential):
                  stride=1,
                  groups=1,
                  use_bias=True,
-                 norm_layer=nn.BatchNorm2d,
+                 norm_layer=nn.InstanceNorm2d,
                  norm_kwargs=None,
                  active_fn=None):
         if norm_kwargs is None:
@@ -55,7 +55,7 @@ class InvertedResidualChannels(nn.Module):
                  dw_kernel_sizes,
                  padding_type='reflect',
                  use_bias=True,
-                 norm_layer=nn.BatchNorm2d,
+                 norm_layer=nn.InstanceNorm2d,
                  norm_kwargs=None,
                  dropout_rate=0.0,
                  active_fn=None):
