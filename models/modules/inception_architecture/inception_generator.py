@@ -1,6 +1,6 @@
 import functools
 
-from torch import nn,add
+from torch import nn
 
 from models.modules.inception_modules import InvertedResidualChannels
 from models.modules.inception_modules import get_active_fn
@@ -17,20 +17,20 @@ class InceptionGenerator(BaseNetwork):
                  channels_reduction_factor,
                  kernel_sizes,
                  padding_type='reflect',
-                 norm_layer=nn.BatchNorm2d,
+                 norm_layer=nn.InstanceNorm2d,
                  norm_momentum=0.1,
                  norm_epsilon=1e-5,
                  dropout_rate=0,
-                 active_fn='nn.LeakyReLU',
+                 active_fn='nn.ReLU',
                  n_blocks=9):
         assert (n_blocks >= 0)
         assert len(kernel_sizes) == len(
             set(kernel_sizes)), 'no duplicate in kernel sizes is allowed.'
         super(InceptionGenerator, self).__init__()
         if type(norm_layer) == functools.partial:
-            use_bias = norm_layer.func == nn.BatchNorm2d
+            use_bias = norm_layer.func == nn.InstanceNorm2d
         else:
-            use_bias = norm_layer == nn.BatchNorm2d
+            use_bias = norm_layer == nn.InstanceNorm2d
         norm_kwargs = {'momentum': norm_momentum, 'eps': norm_epsilon}
         active_fn = get_active_fn(active_fn)
 
@@ -133,30 +133,13 @@ class InceptionGenerator(BaseNetwork):
         self.down_sampling = nn.Sequential(*down_sampling)
         self.features = nn.Sequential(*features)
         self.up_sampling = nn.Sequential(*up_sampling)
-    
+
     def forward(self, input):
         """Standard forward"""
         res = self.down_sampling(input)
         res = self.features(res)
         res = self.up_sampling(res)
         return res
-        # #Stage1
-        # res = self.down_sampling(input)
-        # res = self.features(res)
-        # res = self.up_sampling(res)
-        # y = add(res,input)
-        
-        # #Stage2
-        # res = self.down_sampling(y)
-        # res = self.features(res)
-        # res = self.up_sampling(res)
-        # z = add(res,y)
-
-        # #Stage3
-        # res = self.down_sampling(z)
-        # res = self.features(res)
-        # res = self.up_sampling(res)    
-        # return res
 
     def get_named_block_list(self):
         return _get_named_block_list(self)
