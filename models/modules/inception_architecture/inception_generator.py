@@ -38,7 +38,7 @@ class InceptionGenerator(BaseNetwork):
             nn.ReflectionPad2d(3),
             nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0, bias=use_bias),
             norm_layer(ngf),
-            nn.LeakyReLU(True)
+            nn.ReLU(True)
         ]
 
         n_downsampling = 2
@@ -52,7 +52,7 @@ class InceptionGenerator(BaseNetwork):
                           padding=1,
                           bias=use_bias),
                 norm_layer(ngf * mult * 2),
-                nn.LeakyReLU(True)
+                nn.ReLU(True)
             ]
 
         mult = 2**n_downsampling
@@ -125,7 +125,7 @@ class InceptionGenerator(BaseNetwork):
                                    output_padding=1,
                                    bias=use_bias),
                 norm_layer(int(ngf * mult / 2)),
-                nn.LeakyReLU(True)
+                nn.ReLU(True)
             ]
         up_sampling += [nn.ReflectionPad2d(3)]
         up_sampling += [nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0)]
