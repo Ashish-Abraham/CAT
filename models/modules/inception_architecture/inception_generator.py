@@ -17,20 +17,20 @@ class InceptionGenerator(BaseNetwork):
                  channels_reduction_factor,
                  kernel_sizes,
                  padding_type='reflect',
-                 norm_layer=nn.InstanceNorm2d,
+                 norm_layer=nn.BatchNorm2d,
                  norm_momentum=0.1,
                  norm_epsilon=1e-5,
                  dropout_rate=0,
-                 active_fn='nn.ReLU',
+                 active_fn='nn.LeakyReLU',
                  n_blocks=9):
         assert (n_blocks >= 0)
         assert len(kernel_sizes) == len(
             set(kernel_sizes)), 'no duplicate in kernel sizes is allowed.'
         super(InceptionGenerator, self).__init__()
         if type(norm_layer) == functools.partial:
-            use_bias = norm_layer.func == nn.InstanceNorm2d
+            use_bias = norm_layer.func == nn.BatchNorm2d
         else:
-            use_bias = norm_layer == nn.InstanceNorm2d
+            use_bias = norm_layer == nn.BatchNorm2d
         norm_kwargs = {'momentum': norm_momentum, 'eps': norm_epsilon}
         active_fn = get_active_fn(active_fn)
 
@@ -38,7 +38,7 @@ class InceptionGenerator(BaseNetwork):
             nn.ReflectionPad2d(3),
             nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0, bias=use_bias),
             norm_layer(ngf),
-            nn.ReLU(True)
+            nn.LeakyReLU(True)
         ]
 
         n_downsampling = 2
@@ -52,7 +52,7 @@ class InceptionGenerator(BaseNetwork):
                           padding=1,
                           bias=use_bias),
                 norm_layer(ngf * mult * 2),
-                nn.ReLU(True)
+                nn.LeakyReLU(True)
             ]
 
         mult = 2**n_downsampling
@@ -125,7 +125,7 @@ class InceptionGenerator(BaseNetwork):
                                    output_padding=1,
                                    bias=use_bias),
                 norm_layer(int(ngf * mult / 2)),
-                nn.ReLU(True)
+                nn.LeakyReLU(True)
             ]
         up_sampling += [nn.ReflectionPad2d(3)]
         up_sampling += [nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0)]
@@ -145,25 +145,17 @@ class InceptionGenerator(BaseNetwork):
         res = self.features(res)
         res = self.up_sampling(res)
         y = add(res,input)
-        if type(y) != "<class 'torch.Tensor'>":
-            print(type(y))
         
         #Stage2
         res = self.down_sampling(y)
         res = self.features(res)
         res = self.up_sampling(res)
         z = add(res,y)
-        if type(z) != "<class 'torch.Tensor'>":
-            print(type(z))
-        
-        
+
         #Stage3
         res = self.down_sampling(z)
         res = self.features(res)
-        res = self.up_sampling(res)
-        if type(res) != "<class 'torch.Tensor'>":
-            print(type(res))
-        
+        res = self.up_sampling(res)    
         return res
 
     def get_named_block_list(self):
