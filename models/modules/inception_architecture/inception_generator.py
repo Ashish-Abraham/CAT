@@ -1,6 +1,6 @@
 import functools
 
-from torch import nn
+from torch import nn, add
 
 from models.modules.inception_modules import InvertedResidualChannels
 from models.modules.inception_modules import get_active_fn
@@ -136,9 +136,22 @@ class InceptionGenerator(BaseNetwork):
 
     def forward(self, input):
         """Standard forward"""
+        #Stage1
         res = self.down_sampling(input)
         res = self.features(res)
         res = self.up_sampling(res)
+        y = add(res,input)
+        
+        #Stage2
+        res = self.down_sampling(y)
+        res = self.features(res)
+        res = self.up_sampling(res)
+        z = add(res,y)
+
+        #Stage3
+        res = self.down_sampling(z)
+        res = self.features(res)
+        res = self.up_sampling(res)    
         return res
 
     def get_named_block_list(self):
